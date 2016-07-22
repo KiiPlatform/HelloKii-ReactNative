@@ -39,7 +39,6 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSAppTransportSecurity</key>
-	<!--See http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/ -->
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
@@ -50,5 +49,18 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Ionicons.ttf</string>
+		<string>Andale Mono.ttf</string>
+		<string>Arial Black.ttf</string>
+		<string>Arial.ttf</string>
+		<string>Comic Sans MS.ttf</string>
+		<string>Courier New.ttf</string>
+		<string>Georgia.ttf</string>
+		<string>Microsoft Sans Serif.ttf</string>
+		<string>Skia.ttf</string>
+		<string>Times New Roman.ttf</string>
+	</array>
 </dict>
 </plist>
