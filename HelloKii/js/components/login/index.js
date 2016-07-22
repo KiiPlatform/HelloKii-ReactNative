@@ -20,8 +20,8 @@ class Login extends Component {
             visibleHeight: Dimensions.get('window').height,
             scroll: false,
             isLoading: false,
-            password:"",
-            username:""
+            password:"123ABC",
+            username:"user_123456"
         };
     }
 
@@ -34,7 +34,7 @@ class Login extends Component {
       if (this.state.isLoading) {
         return;
       }
-      
+
       this.setState({ isLoading: true });
       var self = this;
       kii.KiiUser.authenticate(this.state.username, this.state.password).then(
@@ -80,6 +80,7 @@ class Login extends Component {
                                         placeholder="PASSWORD"
                                         secureTextEntry={true}
                                         onChangeText={(password) => this.setState({password})}
+
                                     />
                                 </InputGroup>
 

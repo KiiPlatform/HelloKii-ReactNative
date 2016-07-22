@@ -12,7 +12,7 @@ import Navigator from 'Navigator';
 import Login from './components/login/';
 import Home from './components/home/';
 import SideBar from './components/sideBar';
-
+import TodoPage from './components/todoPage/';
 export var globalNav = {};
 
 const searchResultRegexp = /^search\/(.*)$/;
@@ -52,7 +52,7 @@ class AppNavigator extends Component {
         BackAndroid.addEventListener('hardwareBackPress', () => {
             var routes = this._navigator.getCurrentRoutes();
 
-            if(routes[routes.length - 1].id == 'home' || routes[routes.length - 1].id == 'login') {
+            if(routes[routes.length - 1].id == 'home' || routes[routes.length - 1].id == 'login' ) {
                 return false;
             }
             else {
@@ -113,6 +113,8 @@ class AppNavigator extends Component {
                 return <Login navigator={navigator} />;
             case 'home':
                 return <Home navigator={navigator} />;
+            case 'todoPage':
+                return <TodoPage navigator={navigator} />;
             default :
                 return <Login navigator={navigator}  />;
         }
