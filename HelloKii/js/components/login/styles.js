@@ -25,7 +25,7 @@ module.exports = StyleSheet.create({
         flex: 1,
         marginTop: deviceHeight/1.75,
         backgroundColor: '#453F41',
-        paddingTop: 20,
+        paddingTop: 5,
         paddingLeft: 10,
         paddingRight: 10,
         paddingBottom: 30,
@@ -35,7 +35,11 @@ module.exports = StyleSheet.create({
         marginBottom: 20
     },
     btn: {
+        opacity : 1,
         marginTop: 20,
         alignSelf: 'center'
+    },
+    hidden : {
+       opacity : 0
     }
 });
