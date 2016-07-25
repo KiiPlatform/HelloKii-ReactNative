@@ -26,7 +26,7 @@ export default function (state:State = initialState, action:Action): State {
 
     if (action.type === REPLACE_OR_PUSH_ROUTE) {
         let routes = state.routes;
-        
+
         if(routes[routes.length - 1] == 'home') {
             if(action.route != 'home')
                 globalNav.navigator.push({id: action.route});
@@ -37,9 +37,6 @@ export default function (state:State = initialState, action:Action): State {
         else {
             if(action.route == 'home') {
                 globalNav.navigator.resetTo({id: 'home'});
-                routes = [];
-            } else if(action.route == 'todoPage') {
-                globalNav.navigator.resetTo({id: 'todoPage'});
                 routes = [];
             }
             else {
