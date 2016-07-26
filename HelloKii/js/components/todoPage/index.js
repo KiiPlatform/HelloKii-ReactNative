@@ -27,82 +27,66 @@ class TodoPage extends Component {
         message: '',
         isLoaded: false
       };
-
+      this.loadTodosBucket();
     }
     popRoute() {
         this.props.popRoute();
     }
     componentWillMount() {
         this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-        this.loadTodosBucket();
+
     }
     loadTodosBucket(){
       if(this.props.onlineItems.length > 0) {
         return;
       }
       var self = this;
-      var accessToken = kii.KiiUser.getCurrentUser().getAccessToken();
-      // 1. login user
-      kii.KiiUser.authenticateWithToken(accessToken).then(
-        function(params) {
-          // 2. Create an object
-          var todoBucket = kii.KiiUser.getCurrentUser().bucketWithName("todos");
+      var bucket = kii.KiiUser.getCurrentUser().bucketWithName("todos");
 
-          return todoBucket;
-        }
-      ).then(
-        function(bucket) {
-          // Build "all" query
-          var allQuery = kii.KiiQuery.queryWithClause();
+      var allQuery = kii.KiiQuery.queryWithClause();
 
-          function queryAll(bucket, query, userProc) {
-            var queryRecurr = function(params) {
-              var queryPerformed = params[0];
-              var resultSet = params[1];
-              var nextQuery = params[2];
+      function queryAll(bucket, query, userProc) {
+        var queryRecurr = function(params) {
+          var queryPerformed = params[0];
+          var resultSet = params[1];
+          var nextQuery = params[2];
 
-              userProc(resultSet);
-              if (nextQuery == null) {
-                return Promise.resolve();
-              }
-              // There are more results (pages).
-              // Execute the next query to get more results.
-              return bucket.executeQuery(nextQuery).then(queryRecurr);
-            };
-            return bucket.executeQuery(query).then(queryRecurr);
+          userProc(resultSet);
+          if (nextQuery == null) {
+            return Promise.resolve();
           }
+          // There are more results (pages).
+          // Execute the next query to get more results.
+          return bucket.executeQuery(nextQuery).then(queryRecurr);
+        };
+        return bucket.executeQuery(query).then(queryRecurr);
+      }
 
-          // Execute the query
-          queryAll(bucket, allQuery, function(records) {
-            // do something with the results
-            for (var i = 0; i < records.length; i++) {
-              // do something with the object resultSet[i];
-              var object = records[i];
+      // Execute the query
+      queryAll(bucket, allQuery, function(records) {
+        // do something with the results
+        for (var i = 0; i < records.length; i++) {
+          // do something with the object resultSet[i];
+          var object = records[i];
 
-              let id = object.get("id");
-              let todoTitle = object.get("Title");
-              let created = object.getCreated();
-              console.log("found :"+todoTitle);
-              let val= {
-                id,
-                title: todoTitle,
-                time: created
-              }
-              self.props.addItem(val);
-              self.setState({ message: "objects loaded",isLoaded: true });
-            }
-            self.setState({ isLoaded: true });
-          }).catch(
-            function(error) {
-              var theBucket = error.target;
-              var errorString = error.message;
-              // Error handling
-            }
-          );
+          let id = object.get("id");
+          let todoTitle = object.get("Title");
+          let created = object.getCreated();
+          console.log("found :"+todoTitle);
+          let val= {
+            id,
+            title: todoTitle,
+            time: created
+          }
+          self.props.addItem(val);
+
         }
-      ).catch(
+        self.setState({ message: "objects loaded",isLoaded: true });
+      }).catch(
         function(error) {
-          console.log("Error: " + error);
+          var theBucket = error.target;
+          var errorString = error.message;
+          // Error handling
         }
       );
     }
@@ -125,17 +109,12 @@ class TodoPage extends Component {
         title: this.state.newItem,
         time: new Date().getTime()
       }
+      var todoBucket = kii.KiiUser.getCurrentUser().bucketWithName("todos");
+      var obj = todoBucket.createObject();
+      obj.set("id", id);
+      obj.set("Title",todoTitle)
       // 1. login user
-      kii.KiiUser.authenticateWithToken(accessToken).then(
-        function(params) {
-          // 2. Create an object
-          var todoBucket = kii.KiiUser.getCurrentUser().bucketWithName("todos");
-          var obj = todoBucket.createObject();
-          obj.set("id", id);
-          obj.set("Title",todoTitle)
-          return obj.save();
-        }
-      ).then(
+      obj.save().then(
         function(theSavedObject) {
           var msg = todoTitle + ' is saved to Kii ...';
           self.setState({message: msg});
