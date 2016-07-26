@@ -25,14 +25,14 @@ module.exports = StyleSheet.create({
         flex: 1,
         marginTop: deviceHeight/1.75,
         backgroundColor: '#453F41',
-        paddingTop: 5,
+        paddingTop: 0,
         paddingLeft: 10,
         paddingRight: 10,
-        paddingBottom: 30,
+        paddingBottom: 50,
         bottom: 0
     },
     input: {
-        marginBottom: 20
+        marginBottom: 10
     },
     btn: {
         opacity : 1,
